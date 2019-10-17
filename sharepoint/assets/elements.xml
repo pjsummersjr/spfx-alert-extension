@@ -4,6 +4,6 @@
         Title="SiteAlertNotification"
         Location="ClientSideExtension.ApplicationCustomizer"
         ClientSideComponentId="2edcf545-e2f7-4d5b-83cf-9402374c6d15"
-        ClientSideComponentProperties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+        ClientSideComponentProperties="{&quot;topData&quot;:&quot;Test message&quot;}">
     </CustomAction>
 </Elements>

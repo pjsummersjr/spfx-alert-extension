@@ -1,0 +1,55 @@
+@import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
+
+.app {
+    .notificationContainer {
+        height:30px;
+        width: 1200px;
+        margin-left:auto;
+        margin-right:auto;
+        align-items: center;
+        justify-content: center;
+        margin-top:5px;
+    }
+    .notificationComp {
+        text-align:center;
+        line-height:2.5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width:900px;
+        border-radius: 5px;
+    }
+
+    .emergency {
+        background-color: rgb(245, 214, 214);
+        border:1px #f00 solid;
+        color: #000;
+    }
+
+    .warning {
+        background-color: rgb(253, 223, 193); 
+        border:1px #ff8000 solid;
+        color: #000;
+    }
+
+    .notification {
+        background-color:#dcfddf;
+        border:1px solid #16a624;
+        color: #000;
+    }
+
+    .navButton {
+        margin:5px;
+        border:none;
+        background:inherit;
+        color:$ms-color-themePrimary;
+        font-weight: bold;
+    }
+
+    .navButtonPrevious {
+        float:left;
+    }
+    .navButtonNext {
+        float: right;
+    }
+}

@@ -1,9 +1,9 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "yes-client-side-solution",
+    "name": "Site Notification and Alert Header Extension",
     "id": "a733e18d-2920-49b0-bf54-200223be9b90",
-    "version": "1.0.0.0",
+    "version": "1.2.0.0",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "features": [
@@ -14,14 +14,13 @@
         "version": "1.0.0.0",
         "assets": {
           "elementManifests": [
-            "elements.xml",
-            "clientsideinstance.xml"
+            "elements.xml"
           ]
         }
       }
     ]
   },
   "paths": {
-    "zippedPackage": "solution/yes.sppkg"
+    "zippedPackage": "solution/SiteAlertNotificationExtension.sppkg"
   }
 }

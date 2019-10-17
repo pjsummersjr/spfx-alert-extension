@@ -1,16 +1,19 @@
 import { override } from '@microsoft/decorators';
 import { Log } from '@microsoft/sp-core-library';
+
 import {
   BaseApplicationCustomizer,
   PlaceholderContent,
   PlaceholderName
 } from '@microsoft/sp-application-base';
 
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 import {SPHttpClient, SPHttpClientResponse} from '@microsoft/sp-http';
-
 import * as strings from 'SiteAlertNotificationApplicationCustomizerStrings';
-import styles from './SiteAlertNotification.module.scss';
-import { escape } from '@microsoft/sp-lodash-subset';
+
+import { AlertNotification, IAlertNotificationProps } from './components/AlertNotifications';
+import { NotificationContainer, INotificationContainerProps } from './components/NotificationContainer';
 
 const LOG_SOURCE: string = 'SiteAlertNotificationApplicationCustomizer';
 
@@ -32,7 +35,9 @@ export interface ISiteAlertMessage {
   MoreInformationLink: string;
 }
 
-/** A Custom Action which can be run during execution of a Client Side Application */
+/** 
+ * A Custom Action which can be run during execution of a Client Side Application 
+ **/
 export default class SiteAlertNotificationApplicationCustomizer
   extends BaseApplicationCustomizer<ISiteAlertNotificationApplicationCustomizerProperties> {
 
@@ -68,24 +73,23 @@ export default class SiteAlertNotificationApplicationCustomizer
     .then((notificationMessages) => {
       if(notificationMessages) {
         console.log(`Notification found: ${notificationMessages[0].NotificationMessage}`);
-        return notificationMessages[0];        
+        return notificationMessages;        
       }
       else {
         console.log('No notifications found. Returning nothing.');
         return undefined;
       }
     })
-    .then((notification: ISiteAlertMessage): void => {
-      if(notification) {
-        let notificationStyle = styles.notification;
-        if(notification.NotificationLevel == "Emergency") notificationStyle = styles.emergency;
-        if(notification.NotificationLevel == "Warning") notificationStyle = styles.warning;
-
+    .then((notifications: ISiteAlertMessage[]): void => {
+      if(notifications && notifications.length > 0) {
         if(this._topPlaceHolder.domElement) {
-          this._topPlaceHolder.domElement.innerHTML = `
-            <div class="${styles.app}">
-              <div class="${styles.top} ${notificationStyle}">${notification.NotificationMessage}</div>
-            </div>`;
+          const notificationEl: React.ReactElement<INotificationContainerProps> = React.createElement(
+              NotificationContainer,
+              {
+                messages: notifications
+              }
+          );         
+          ReactDom.render(notificationEl,this._topPlaceHolder.domElement);
         }
       }
       else {
@@ -99,7 +103,7 @@ export default class SiteAlertNotificationApplicationCustomizer
   private _getCurrentNotification(): Promise<ISiteAlertMessage[]> {
 
     let currentDateTime: string = new Date().toISOString();
-    let requestUrl = this.context.pageContext.web.absoluteUrl + `/_api/web/lists/getByTitle('Notifications')/items?$filter=StartDate le datetime'${currentDateTime}' and EndDateTime ge datetime'${currentDateTime}'&$select=NotificationMessage,NotificationLevel,StartDate,EndDateTime,MoreInformationLink`;
+    let requestUrl = this.context.pageContext.web.absoluteUrl + `/_api/web/lists/getByTitle('Notifications')/items?$filter=StartDate le datetime'${currentDateTime}' and EndDateTime ge datetime'${currentDateTime}'&$select=NotificationMessage,NotificationLevel,StartDate,EndDateTime,MoreInformationLink&$orderby=Created desc`;
 
     return this.context.spHttpClient.get(
       requestUrl, SPHttpClient.configurations.v1

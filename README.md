@@ -13,6 +13,17 @@ Beyond the basics of displaying the notification, this extension provides the ab
 ## SharePoint Site Setup
 This solution does rely on the existence of a list in the local SharePoint site. The [SharePoint Starter Kit version of this](https://github.com/SharePoint/sp-starter-kit/tree/master/solution/src/extensions/alertNotitication) has a more elegant approach that looks for the list in the associated hub site. This one takes a more basic approach and looks in the local site. 
 
+The list should be named *Notifications* and have the following structure in addition to the default list fields:
+|Field name|Type|Option Values|Required?|
+|----------|----|-------------|---------|
+|NotificationMessage|Single line of text|*N/A*|Yes|
+|NotificationLevel|Choice|"Emergency" "Warning" "Notification"|Yes|
+|StartDate|Date and Time|*N/A*|Yes|
+|EndDateTime|Date and Time|*N/A*|Yes|
+|MoreInformationLink|Single line of text|*N/A*|No|
+
+You can populate this list manually or do as I describe in [this blog post](https://medium.com/pjsummersjr) and build a [PowerApp](https://powerapps.microsoft.com) to do it.
+
 ## Building the code
 
 Building the solution requires both some standard JavaScript build steps as well as some steps specific to deploying SPFX extensions
@@ -40,4 +51,6 @@ gulp package-solution --ship
 This will create the .sppkg package file under [Project Root]/sharepoint/solution/[package name].sppkg
 
 You can define the name of the .sppkg file in [Project Root]/config/package-solution.json under paths/zippedPackage.
+
+As [describe here](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/extensions/get-started/hosting-extension-from-office365-cdn#update-your-solution-project-for-the-cdn-urls), this package file needs to be deployed to your tenant app catalog and you have to approve of the code being served from SharePoint Online.
 

@@ -45,7 +45,9 @@ Once you're ready to actually deploy the code and deliver it from a CDN, one pat
 
 Once that's done, build it up and package it up:
 ```bash
-gulp build --ship
+gulp clean
+gulp build 
+gulp bundle --ship
 gulp package-solution --ship
 ```
 This will create the .sppkg package file under [Project Root]/sharepoint/solution/[package name].sppkg
